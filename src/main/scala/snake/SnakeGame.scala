@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType
 import com.badlogic.gdx.graphics.{Color, GL20}
 import com.badlogic.gdx.{Game, Gdx}
 import snake.entities.Direction
-import snake.bot.{Bot, StupidBot}
+import snake.bot.{Bot, SimpleBot, StupidBot}
 
 class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Option[Bot]) extends Game {
   lazy val pressedKeys = new InputCondensate
@@ -36,6 +36,6 @@ class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Option[Bot]) 
 object SnakeGame {
   def apply(cellSize: Int, frameSize: Int): SnakeGame = {
     val game = entities.Game.create(frameSize)
-    new SnakeGame(game, cellSize, bot = Some(new StupidBot))
+    new SnakeGame(game, cellSize, bot = Some(new SimpleBot))
   }
 }
