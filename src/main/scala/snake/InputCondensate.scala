@@ -1,25 +1,19 @@
 package snake
 
 import com.badlogic.gdx.InputAdapter
-import com.badlogic.gdx.Input.Keys
 
-import snake.entities.Direction
 
 class InputCondensate extends InputAdapter {
-  private var keys: Seq[Int] = Seq.empty[Int]
+  type Key = Int
+  private var keys: Seq[Key] = Seq.empty[Key]
 
-  def getDirections: Seq[Direction] = keys.map {
-    case Keys.UP => entities.Up
-    case Keys.DOWN => entities.Down
-    case Keys.LEFT => entities.Left
-    case Keys.RIGHT => entities.Right
-  }
+  def getKeys: Seq[Key] = keys
 
   def clear(): Unit = {
-    keys = Seq.empty[Int]
+    keys = Seq.empty[Key]
   }
 
-  override def keyDown(keycode: Int): Boolean = {
+  override def keyDown(keycode: Key): Boolean = {
     keys = keycode +: keys
     true
   }

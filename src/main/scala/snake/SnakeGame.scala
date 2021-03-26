@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType
 import com.badlogic.gdx.graphics.{Color, GL20}
 import com.badlogic.gdx.{Game, Gdx}
+import snake.entities.Direction
 
 class SnakeGame(var game: entities.Game, val cellSize: Float) extends Game {
   lazy val pressedKeys = new InputCondensate
@@ -12,7 +13,7 @@ class SnakeGame(var game: entities.Game, val cellSize: Float) extends Game {
   override def create(): Unit = Gdx.input.setInputProcessor(pressedKeys)
   override def render(): Unit = {
     game = game
-      .handle(pressedKeys.getDirections)
+      .handle(Direction.keysToDirections(pressedKeys.getKeys))
       .update(Gdx.graphics.getDeltaTime)
 
     pressedKeys.clear()

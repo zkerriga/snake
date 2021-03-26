@@ -2,16 +2,19 @@ package snake.entities
 
 case class Snake(body: Seq[Point], direction: Direction) {
   def move: Snake = {
-    val point = direction match {
-      case Up => body.head.copy(y = body.head.y + 1)
-      case Down => body.head.copy(y = body.head.y - 1)
-      case Left => body.head.copy(x = body.head.x - 1)
-      case Right => body.head.copy(x = body.head.x + 1)
+    val head = body.head
+    val movedHead = direction match {
+      case Up => head.copy(y = head.y + 1)
+      case Down => head.copy(y = head.y - 1)
+      case Left => head.copy(x = head.x - 1)
+      case Right => head.copy(x = head.x + 1)
     }
-    copy(body = point +: body.init)
+    copy(body = movedHead +: body.init)
   }
 
-  def turn(direction: Direction): Snake = copy(direction = direction)
+  def turn(newDirection: Direction): Snake =
+    if (newDirection == direction.reverse) this
+    else copy(direction = newDirection)
 
   def eat(food: Food): Snake = copy(body = food.body +: body)
 
