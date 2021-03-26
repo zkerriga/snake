@@ -13,4 +13,9 @@ case class SquareFrame(size: Int) extends Frame {
   }
 
   override def getRandomPoint: Point = Point(between(1, size), between(1, size))
+
+  override def collision(point: Point): Boolean = point match {
+    case Point(x, y) if x == 0 || y == 0 || x == size - 1 || y == size - 1 => true
+    case _ => false
+  }
 }

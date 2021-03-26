@@ -1,7 +1,5 @@
 package snake.entities
 
-import scala.util.Random
-
 case class Game(food: Food, snake: Snake, frame: Frame, elapsedTime: Float, start: Snake) {
   def handle(input: Seq[Direction]): Game = {
     if (input.isEmpty) {

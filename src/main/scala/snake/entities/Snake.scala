@@ -20,7 +20,7 @@ case class Snake(body: Seq[Point], direction: Direction) {
 
   def canEat(food: Food): Boolean = food.body == body.head
 
-  def isHeadbutt(frame: Frame): Boolean = frame.points.contains(body.head)
+  def isHeadbutt(frame: Frame): Boolean = frame.collision(body.head)
 
   def isBitTail: Boolean = body.tail.contains(body.head)
 }
