@@ -6,7 +6,7 @@ object Main extends App {
   val config = new LwjglApplicationConfiguration
 
   val cellSize = 10
-  val frameSize = 35
+  val frameSize = 20
 
   config.title = "Scala Snake"
   config.width = cellSize * frameSize

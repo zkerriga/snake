@@ -37,7 +37,7 @@ case class Game(food: Food, snake: Snake, frame: Frame, elapsedTime: Float, star
 
 object Game {
   def create(size: Int): Game = {
-    assert(size > 20)
+    assert(size > 8)
 
     val frame = SquareFrame(size + 1)
     val food = Food(frame.getRandomPoint)
