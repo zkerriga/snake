@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl.{LwjglApplication, LwjglApplicationConfig
 
 object Main extends App {
   val config = new LwjglApplicationConfiguration
+
   val cellSize = 10
   val width = 40
   val height = 40
