@@ -29,8 +29,8 @@ class SnakeGame(var game: entities.Game, val cellSize: Float) extends Game {
 }
 
 object SnakeGame {
-  def apply(cellSize: Int, width: Int, height: Int): SnakeGame = {
-    val game = entities.Game.create(width, height)
+  def apply(cellSize: Int, frameSize: Int): SnakeGame = {
+    val game = entities.Game.create(frameSize)
     new SnakeGame(game, cellSize)
   }
 }

@@ -22,7 +22,7 @@ case class Game(food: Food, snake: Snake, frame: Frame, elapsedTime: Float, star
         game.reset()
       }
       else if (game.snake.canEat(food)) {
-        game.copy(snake = snake.eat(food), food = food.moveRandomIn(frame))
+        game.copy(snake = snake.eat(food), food = Food(frame.getRandomPoint))
       }
       else {
         game
@@ -38,12 +38,12 @@ case class Game(food: Food, snake: Snake, frame: Frame, elapsedTime: Float, star
 }
 
 object Game {
-  def create(width: Int, height: Int): Game = {
-    assert(width > 10 && height > 10)
+  def create(size: Int): Game = {
+    assert(size > 20)
 
-    val food = Food(Point(width / 2, width / 2), new Random())
-    val frame = Frame(Point(0, 0), Point(width, height))
-    val snake = Snake(Point(5, 5) :: Point(6, 6) :: Point(7, 7) :: Nil, Right)
+    val frame = SquareFrame(size + 1)
+    val food = Food(frame.getRandomPoint)
+    val snake = Snake(Point(5, 5) :: Point(6, 5) :: Point(7, 5) :: Nil, Right)
     Game(food, snake, frame, elapsedTime = 0, snake)
   }
 }
