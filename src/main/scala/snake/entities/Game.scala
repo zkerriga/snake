@@ -1,6 +1,6 @@
 package snake.entities
 
-case class Game(food: Food, snake: Snake, frame: Frame, elapsedTime: Float, start: Snake) {
+case class Game(food: Food, snake: Snake, frame: Frame, private val elapsedTime: Float, private val start: Snake) {
   def handle(input: Seq[Direction]): Game = {
     if (input.isEmpty) {
       this

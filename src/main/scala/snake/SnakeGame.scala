@@ -5,15 +5,20 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType
 import com.badlogic.gdx.graphics.{Color, GL20}
 import com.badlogic.gdx.{Game, Gdx}
 import snake.entities.Direction
+import snake.bot.{Bot, StupidBot}
 
-class SnakeGame(var game: entities.Game, val cellSize: Float) extends Game {
+class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Option[Bot]) extends Game {
   lazy val pressedKeys = new InputCondensate
   lazy val shapeRenderer: ShapeRenderer = new ShapeRenderer()
 
   override def create(): Unit = Gdx.input.setInputProcessor(pressedKeys)
   override def render(): Unit = {
+    val nextDirections = bot match {
+      case Some(bot) => bot.chooseDirection(game) +: Seq.empty[Direction]
+      case _ => Direction.keysToDirections(pressedKeys.getKeys)
+    }
     game = game
-      .handle(Direction.keysToDirections(pressedKeys.getKeys))
+      .handle(nextDirections)
       .update(Gdx.graphics.getDeltaTime)
 
     pressedKeys.clear()
@@ -31,6 +36,6 @@ class SnakeGame(var game: entities.Game, val cellSize: Float) extends Game {
 object SnakeGame {
   def apply(cellSize: Int, frameSize: Int): SnakeGame = {
     val game = entities.Game.create(frameSize)
-    new SnakeGame(game, cellSize)
+    new SnakeGame(game, cellSize, bot = Some(new StupidBot))
   }
 }
