@@ -3,16 +3,16 @@ package snake
 import com.badlogic.gdx.InputAdapter
 
 class InputCondensate extends InputAdapter {
-  private var keys: List[Int] = List.empty[Int]
+  private var keys: Seq[Int] = Seq.empty[Int]
 
-  def list: List[Int] = keys.reverse
+  def list: Seq[Int] = keys.reverse
 
   def clear(): Unit = {
-    keys = List.empty[Int]
+    keys = Seq.empty[Int]
   }
 
   override def keyDown(keycode: Int): Boolean = {
-    keys = keycode :: keys
+    keys = keycode +: keys
     true
   }
 }

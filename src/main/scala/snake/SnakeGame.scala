@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType
 import com.badlogic.gdx.graphics.{Color, GL20}
 import com.badlogic.gdx.{Game, Gdx}
 
-class SnakeGame(var game: entities.Game, val sizeMultiplayer: Float) extends Game {
+class SnakeGame(var game: entities.Game, val cellSize: Float) extends Game {
   lazy val prs = new InputCondensate
   lazy val shapeRenderer: ShapeRenderer = new ShapeRenderer()
 
@@ -27,7 +27,14 @@ class SnakeGame(var game: entities.Game, val sizeMultiplayer: Float) extends Gam
     shapeRenderer.setColor(Color.BLACK)
     shapeRenderer.begin(ShapeType.Filled)
     for (p <- game.points)
-      shapeRenderer.circle(p.x * sizeMultiplayer, p.y * sizeMultiplayer, sizeMultiplayer / 2)
+      shapeRenderer.circle(p.x * cellSize, p.y * cellSize, cellSize / 2)
     shapeRenderer.end()
+  }
+}
+
+object SnakeGame {
+  def apply(cellSize: Int, width: Int, height: Int): SnakeGame = {
+    val game = entities.Game.create(width, height)
+    new SnakeGame(game, cellSize)
   }
 }
