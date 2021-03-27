@@ -32,7 +32,7 @@ class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Bot) extends 
 
   private def renderSnakes(game: entities.Game): Unit = game.snakes.foreach{
     snake =>
-      shapeRenderer.setColor(Color.PURPLE)
+      shapeRenderer.setColor(snake.color)
       shapeRenderer.begin(ShapeType.Filled)
       for (p <- snake.body)
         shapeRenderer.circle(p.x * cellSize, p.y * cellSize, cellSize / 2)

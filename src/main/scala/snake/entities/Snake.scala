@@ -1,6 +1,8 @@
 package snake.entities
 
-case class Snake(body: Seq[Point], direction: Direction) {
+import com.badlogic.gdx.graphics.Color
+
+case class Snake(body: Seq[Point], direction: Direction, color: Color) {
   def move: Snake = {
     val head = body.head
     val movedHead = direction match {

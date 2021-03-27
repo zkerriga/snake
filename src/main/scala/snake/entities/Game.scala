@@ -1,5 +1,8 @@
 package snake.entities
 
+import com.badlogic.gdx.graphics.Color
+import scala.util.Random.nextInt
+
 case class Game(
   food: Food,
   snakes: Set[Snake],
@@ -51,8 +54,15 @@ object Game {
     val frame = SquareFrame(size + 1)
     val food = Food(frame.getRandomPoint)
     val snakes: Set[Snake] = (1 to 4).foldLeft(Set.empty[Snake])(
-      (acc, i) => acc + Snake(Point(i, i) +: Nil, Up)
+      (acc, i) => acc + Snake(Point(i, i) +: Nil, Up, getRandomColor)
     )
     Game(food, snakes = snakes, frame, elapsedTime = 0, start = snakes, speed)
+  }
+
+  private def getRandomColor: Color = nextInt() % 4 match {
+    case 0 => Color.BLUE
+    case 1 => Color.RED
+    case 2 => Color.PURPLE
+    case _ => Color.GREEN
   }
 }
