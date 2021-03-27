@@ -1,20 +1,18 @@
 package snake.entities
 
-case class Game(food: Food, snake: Snake, frame: Frame, private val elapsedTime: Float, private val start: Snake) {
-  def handle(input: Seq[Direction]): Game = {
-    if (input.isEmpty) {
-      this
-    }
-    else {
-      copy(snake = input.foldLeft(snake)(
-        (snake, direction) => snake.turn(direction)
-      ))
-    }
-  }
+case class Game(
+  food: Food,
+  snake: Snake,
+  frame: Frame,
+  private val elapsedTime: Float,
+  private val start: Snake,
+  private val speedK: Int
+) {
+  def handleTurn(direction: Direction): Game = copy(snake = snake.turn(direction))
 
   def update(deltaTime: Float): Game = {
     val elapsed = elapsedTime + deltaTime
-    if (elapsed > 0.06) {
+    if (elapsed > 0.1 / speedK) {
       val game = copy(snake = snake.move, elapsedTime = 0)
       if (game.snake.isHeadbutt(frame) || game.snake.isBitTail) {
         game.reset()
@@ -36,12 +34,12 @@ case class Game(food: Food, snake: Snake, frame: Frame, private val elapsedTime:
 }
 
 object Game {
-  def create(size: Int): Game = {
+  def create(size: Int, speed: Int): Game = {
     assert(size > 8)
 
     val frame = SquareFrame(size + 1)
     val food = Food(frame.getRandomPoint)
     val snake = Snake(Point(5, 5) :: Point(6, 5) :: Point(7, 5) :: Nil, Right)
-    Game(food, snake, frame, elapsedTime = 0, snake)
+    Game(food, snake, frame, elapsedTime = 0, snake, speed)
   }
 }

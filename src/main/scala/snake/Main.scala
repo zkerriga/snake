@@ -15,7 +15,7 @@ object Main extends App {
   config.height = cellSize * frameSize
 
   new LwjglApplication(
-    SnakeGame(cellSize, frameSize, bot = Some(new SimpleBot)),
+    SnakeGame(cellSize, frameSize, speed = 8, bot = new SimpleBot),
     config
   )
 }

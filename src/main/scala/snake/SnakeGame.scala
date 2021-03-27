@@ -4,21 +4,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType
 import com.badlogic.gdx.graphics.{Color, GL20}
 import com.badlogic.gdx.{Game, Gdx}
-import snake.entities.Direction
-import snake.bot.Bot
 
-class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Option[Bot]) extends Game {
+import snake.bot.Bot
+import snake.entities.Direction
+
+class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Bot) extends Game {
   lazy val pressedKeys = new InputCondensate
   lazy val shapeRenderer: ShapeRenderer = new ShapeRenderer()
 
   override def create(): Unit = Gdx.input.setInputProcessor(pressedKeys)
   override def render(): Unit = {
-    val nextDirections = bot match {
-      case Some(bot) => bot.chooseDirection(game) +: Seq.empty[Direction]
-      case _ => Direction.keysToDirections(pressedKeys.getKeys)
-    }
     game = game
-      .handle(nextDirections)
+      .handleTurn(bot.chooseDirection(game))
       .update(Gdx.graphics.getDeltaTime)
 
     pressedKeys.clear()
@@ -34,8 +31,8 @@ class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Option[Bot]) 
 }
 
 object SnakeGame {
-  def apply(cellSize: Int, frameSize: Int, bot: Option[Bot]): SnakeGame = {
-    val game = entities.Game.create(frameSize)
+  def apply(cellSize: Int, frameSize: Int, speed: Int, bot: Bot): SnakeGame = {
+    val game = entities.Game.create(frameSize, speed)
     new SnakeGame(game, cellSize, bot)
   }
 }
