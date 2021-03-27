@@ -8,14 +8,14 @@ object Main extends App {
   val config = new LwjglApplicationConfiguration
 
   val cellSize = 10
-  val frameSize = 20
+  val frameSize = 50
 
   config.title = "Scala Snake"
   config.width = cellSize * frameSize
   config.height = cellSize * frameSize
 
   new LwjglApplication(
-    SnakeGame(cellSize, frameSize, speed = 1, bot = new SimpleBot),
+    SnakeGame(cellSize, frameSize, speed = 10, bot = new SimpleBot),
     config
   )
 }

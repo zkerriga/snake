@@ -52,15 +52,19 @@ object Game {
     val frame = SquareFrame(size + 1)
     val food = Food(frame.getRandomPoint)
     val snakes: Set[Snake] = (1 to 4).foldLeft(Set.empty[Snake])(
-      (acc, i) => acc + Snake(Point(i, i) +: Nil, Up, getRandomColor)
+      (acc, i) => acc + Snake(frame.getRandomPoint +: Nil, Up, getRandomColor)
     )
     Game(food, snakes = snakes, frame, elapsedTime = 0, start = snakes, speed)
   }
 
-  private def getRandomColor: Color = nextInt() % 4 match {
+  private def getRandomColor: Color = nextInt() % 8 match {
     case 0 => Color.BLUE
     case 1 => Color.RED
     case 2 => Color.PURPLE
+    case 3 => Color.BLACK
+    case 4 => Color.BROWN
+    case 5 => Color.GOLD
+    case 6 => Color.MAGENTA
     case _ => Color.GREEN
   }
 }

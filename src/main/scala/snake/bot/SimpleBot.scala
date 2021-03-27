@@ -19,6 +19,9 @@ class SimpleBot extends Bot {
       if (snake.isBitTail || snake.isHeadbutt(game.frame)) {
         Left("fail")
       }
+      else if (game.snakes.exists(sn => sn.body.contains(snake.body.head))) {
+        Left("Don't step on it!")
+      }
       else {
         Right(direction, Point.distanceSquare(snake.body.head, game.food.point))
       }
