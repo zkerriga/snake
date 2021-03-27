@@ -2,6 +2,7 @@ package snake.bot
 
 import snake.entities.{Direction, Game, Point}
 import snake.entities
+import scala.util.Random.nextBoolean
 
 class SimpleBot extends Bot {
   private val directions = Seq(
@@ -30,6 +31,8 @@ class SimpleBot extends Bot {
       .sortBy(_._2)
 
     sortedSeq match {
+      case first +: second +: _ if math.abs(first._2 - second._2) < 0.01 =>
+        if (nextBoolean()) first._1 else second._1
       case head +: _ => head._1
       case _ => entities.Up
     }
