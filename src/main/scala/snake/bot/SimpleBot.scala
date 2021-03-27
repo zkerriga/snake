@@ -19,7 +19,7 @@ class SimpleBot extends Bot {
         Left("fail")
       }
       else {
-        Right(direction, Point.distanceSquare(snake.body.head, game.food.body))
+        Right(direction, Point.distanceSquare(snake.body.head, game.food.point))
       }
     }
   }

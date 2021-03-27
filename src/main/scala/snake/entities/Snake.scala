@@ -16,9 +16,9 @@ case class Snake(body: Seq[Point], direction: Direction) {
     if (newDirection == direction.reverse) this
     else copy(direction = newDirection)
 
-  def eat(food: Food): Snake = copy(body = food.body +: body)
+  def eat(food: Food): Snake = copy(body = food.point +: body)
 
-  def canEat(food: Food): Boolean = food.body == body.head
+  def canEat(food: Food): Boolean = food.point == body.head
 
   def isHeadbutt(frame: Frame): Boolean = frame.collision(body.head)
 

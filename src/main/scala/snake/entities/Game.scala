@@ -32,7 +32,7 @@ case class Game(food: Food, snake: Snake, frame: Frame, private val elapsedTime:
 
   def reset(): Game = copy(snake = start)
 
-  def points: Seq[Point] = food.body +: snake.body ++: frame.points
+  def points: Seq[Point] = food.point +: snake.body ++: frame.points
 }
 
 object Game {

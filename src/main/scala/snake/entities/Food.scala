@@ -1,3 +1,3 @@
 package snake.entities
 
-case class Food(body: Point)
+case class Food(point: Point)
