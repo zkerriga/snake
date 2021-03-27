@@ -22,10 +22,33 @@ class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Bot) extends 
 
     Gdx.gl.glClearColor(1, 1, 1, 1)
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+    renderFrame(game)
+    renderFood(game)
+    renderSnakes(game)
+  }
+
+  private def renderSnakes(game: entities.Game): Unit = Seq(game.snake).foreach{
+    snake =>
+      shapeRenderer.setColor(Color.PURPLE)
+      shapeRenderer.begin(ShapeType.Filled)
+      for (p <- snake.body)
+        shapeRenderer.circle(p.x * cellSize, p.y * cellSize, cellSize / 2)
+      shapeRenderer.end()
+  }
+
+  private def renderFrame(game: entities.Game): Unit = {
     shapeRenderer.setColor(Color.BLACK)
+    shapeRenderer.begin(ShapeType.Line)
+    for (p <- game.frame.points)
+      shapeRenderer.rect(p.x * cellSize - cellSize / 2, p.y * cellSize - cellSize / 2, cellSize, cellSize)
+    shapeRenderer.end()
+  }
+
+  private def renderFood(game: entities.Game): Unit = {
+    shapeRenderer.setColor(Color.RED)
     shapeRenderer.begin(ShapeType.Filled)
-    for (p <- game.points)
-      shapeRenderer.circle(p.x * cellSize, p.y * cellSize, cellSize / 2)
+    val p = game.food.point
+    shapeRenderer.circle(p.x * cellSize, p.y * cellSize, cellSize / 2)
     shapeRenderer.end()
   }
 }
