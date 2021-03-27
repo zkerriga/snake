@@ -2,6 +2,8 @@ package snake
 
 import com.badlogic.gdx.backends.lwjgl.{LwjglApplication, LwjglApplicationConfiguration}
 
+import snake.bot.SimpleBot
+
 object Main extends App {
   val config = new LwjglApplicationConfiguration
 
@@ -13,7 +15,7 @@ object Main extends App {
   config.height = cellSize * frameSize
 
   new LwjglApplication(
-    SnakeGame(cellSize, frameSize),
+    SnakeGame(cellSize, frameSize, bot = Some(new SimpleBot)),
     config
   )
 }
