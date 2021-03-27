@@ -13,7 +13,7 @@ case class Game(
 ) {
   def handleTurn(map: Map[Snake, Direction]): Game = map.foldLeft(this) {
       (acc, pair) =>
-        acc.copy(snakes = (snakes - pair._1) + pair._1.turn(pair._2))
+        acc.copy(snakes = (acc.snakes - pair._1) + pair._1.turn(pair._2))
     }
 
   private def fullUpdate: Game = {
@@ -22,11 +22,11 @@ case class Game(
         val movedSnake = snake.move
         val game = acc.copy(snakes = (acc.snakes - snake) + movedSnake)
         if (movedSnake.isHeadbutt(frame) || movedSnake.isBitTail) {
-          game.copy(snakes = snakes - movedSnake)
+          game.copy(snakes = game.snakes - movedSnake)
         }
         else if (movedSnake.canEat(food)) {
           game.copy(
-            snakes = snakes - movedSnake + movedSnake.eat(food),
+            snakes = (game.snakes - movedSnake) + movedSnake.eat(food),
             food = Food(frame.getRandomPoint)
           )
         }
@@ -43,8 +43,6 @@ case class Game(
       copy(elapsedTime = elapsed)
     }
   }
-
-  def reset(): Game = copy(snakes = start)
 }
 
 object Game {
