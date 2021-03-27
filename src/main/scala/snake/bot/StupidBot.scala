@@ -1,7 +1,7 @@
 package snake.bot
 
-import snake.entities.{Direction, Game, Up}
+import snake.entities.{Direction, Game, Snake, Up}
 
 class StupidBot extends Bot {
-  override def chooseDirection(game: Game): Direction = Up
+  override def chooseDirection(game: Game, snake: Snake): Direction = Up
 }

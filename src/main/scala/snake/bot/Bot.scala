@@ -1,7 +1,7 @@
 package snake.bot
 
-import snake.entities.{Direction, Game}
+import snake.entities.{Direction, Game, Snake}
 
 trait Bot {
-  def chooseDirection(game: Game): Direction
+  def chooseDirection(game: Game, snake: Snake): Direction
 }

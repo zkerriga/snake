@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.{Color, GL20}
 import com.badlogic.gdx.{Game, Gdx}
 
 import snake.bot.Bot
-import snake.entities.Direction
+import snake.entities.{Direction, Snake}
 
 class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Bot) extends Game {
   lazy val pressedKeys = new InputCondensate
@@ -14,8 +14,11 @@ class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Bot) extends 
 
   override def create(): Unit = Gdx.input.setInputProcessor(pressedKeys)
   override def render(): Unit = {
+    val allMoves: Map[Snake, Direction] = game.snakes.foldLeft(Map.empty[Snake, Direction]) {
+      (acc, snake) => acc + (snake -> bot.chooseDirection(game, snake))
+    }
     game = game
-      .handleTurn(bot.chooseDirection(game))
+      .handleTurn(allMoves)
       .update(Gdx.graphics.getDeltaTime)
 
     pressedKeys.clear()
@@ -27,7 +30,7 @@ class SnakeGame(var game: entities.Game, val cellSize: Float, bot: Bot) extends 
     renderSnakes(game)
   }
 
-  private def renderSnakes(game: entities.Game): Unit = Seq(game.snake).foreach{
+  private def renderSnakes(game: entities.Game): Unit = game.snakes.foreach{
     snake =>
       shapeRenderer.setColor(Color.PURPLE)
       shapeRenderer.begin(ShapeType.Filled)

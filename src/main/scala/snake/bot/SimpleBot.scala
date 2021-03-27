@@ -1,7 +1,8 @@
 package snake.bot
 
-import snake.entities.{Direction, Game, Point}
+import snake.entities.{Direction, Game, Point, Snake}
 import snake.entities
+
 import scala.util.Random.nextBoolean
 
 class SimpleBot extends Bot {
@@ -9,12 +10,12 @@ class SimpleBot extends Bot {
     entities.Up, entities.Down, entities.Left, entities.Right
   )
 
-  private def analyze(game: Game, direction: Direction): Either[String, (Direction, Double)] = {
-    if (game.snake.direction == direction.reverse) {
+  private def analyze(game: Game, gSnake: Snake, direction: Direction): Either[String, (Direction, Double)] = {
+    if (gSnake.direction == direction.reverse) {
       Left("no sense")
     }
     else {
-      val snake = game.snake.turn(direction).move
+      val snake = gSnake.turn(direction).move
       if (snake.isBitTail || snake.isHeadbutt(game.frame)) {
         Left("fail")
       }
@@ -24,9 +25,9 @@ class SimpleBot extends Bot {
     }
   }
 
-  override def chooseDirection(game: Game): Direction = {
+  override def chooseDirection(game: Game, snake: Snake): Direction = {
     val sortedSeq = directions
-      .map(analyze(game, _))
+      .map(analyze(game, snake, _))
       .collect{ case Right(pair) => pair }
       .sortBy(_._2)
 

@@ -2,35 +2,46 @@ package snake.entities
 
 case class Game(
   food: Food,
-  snake: Snake,
+  snakes: Set[Snake],
   frame: Frame,
   private val elapsedTime: Float,
-  private val start: Snake,
+  private val start: Set[Snake],
   private val speedK: Int
 ) {
-  def handleTurn(direction: Direction): Game = copy(snake = snake.turn(direction))
+  def handleTurn(map: Map[Snake, Direction]): Game = map.foldLeft(this) {
+      (acc, pair) =>
+        acc.copy(snakes = (snakes - pair._1) + pair._1.turn(pair._2))
+    }
 
+  private def fullUpdate: Game = {
+    snakes.foldLeft(this) {
+      (acc, snake) =>
+        val movedSnake = snake.move
+        val game = acc.copy(snakes = (acc.snakes - snake) + movedSnake)
+        if (movedSnake.isHeadbutt(frame) || movedSnake.isBitTail) {
+          game.copy(snakes = snakes - movedSnake)
+        }
+        else if (movedSnake.canEat(food)) {
+          game.copy(
+            snakes = snakes - movedSnake + movedSnake.eat(food),
+            food = Food(frame.getRandomPoint)
+          )
+        }
+        else {
+          game
+        }
+    }
+  }
   def update(deltaTime: Float): Game = {
     val elapsed = elapsedTime + deltaTime
     if (elapsed > 0.1 / speedK) {
-      val game = copy(snake = snake.move, elapsedTime = 0)
-      if (game.snake.isHeadbutt(frame) || game.snake.isBitTail) {
-        game.reset()
-      }
-      else if (game.snake.canEat(food)) {
-        game.copy(snake = snake.eat(food), food = Food(frame.getRandomPoint))
-      }
-      else {
-        game
-      }
+      fullUpdate.copy(elapsedTime = 0)
     } else {
       copy(elapsedTime = elapsed)
     }
   }
 
-  def reset(): Game = copy(snake = start)
-
-  def points: Seq[Point] = food.point +: snake.body ++: frame.points
+  def reset(): Game = copy(snakes = start)
 }
 
 object Game {
@@ -39,7 +50,9 @@ object Game {
 
     val frame = SquareFrame(size + 1)
     val food = Food(frame.getRandomPoint)
-    val snake = Snake(Point(5, 5) :: Point(6, 5) :: Point(7, 5) :: Nil, Right)
-    Game(food, snake, frame, elapsedTime = 0, snake, speed)
+    val snakes: Set[Snake] = (1 to 4).foldLeft(Set.empty[Snake])(
+      (acc, i) => acc + Snake(Point(i, i) +: Nil, Up)
+    )
+    Game(food, snakes = snakes, frame, elapsedTime = 0, start = snakes, speed)
   }
 }
